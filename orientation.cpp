@@ -50,4 +50,3 @@ double getOrientation(const vector<Point>& pts, Mat& img)
     double angle = atan2(eigen_vecs[0].y, eigen_vecs[0].x); // orientation in radians
     return angle;
 }
-
