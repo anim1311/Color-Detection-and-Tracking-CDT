@@ -1,4 +1,4 @@
-#include"orientation.h"
+#include "orientation.h"
 
 #define PRINTOBJLOC 0
 #define PRINTCOLORDATA 1
@@ -76,7 +76,7 @@ Vec3d rgb_to_hsv(Vec3d color)
 void onMouse(int evt, int x, int y, int flags, void* param) {
     
     
-    if(evt == CV_EVENT_LBUTTONDOWN) {
+    if(evt == cv::EVENT_FLAG_LBUTTON ) {
         
         Mat* mtPtr = (Mat*)param;
         Vec3b color = mtPtr->at<Vec3i>(x,y);
