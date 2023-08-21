@@ -1,7 +1,6 @@
-#include"orientation.h"
+#include "orientation.h"
 
-
-void drawAxis(Mat& img, Point p, Point q, Scalar colour, const float scale = 0.2)
+void drawAxis(Mat &img, Point p, Point q, Scalar colour, const float scale = 0.2)
 {
     double angle = atan2((double)p.y - q.y, (double)p.x - q.x); // angle in radians
     double hypotenuse = sqrt((double)(p.y - q.y) * (p.y - q.y) + (p.x - q.x) * (p.x - q.x));
@@ -17,9 +16,9 @@ void drawAxis(Mat& img, Point p, Point q, Scalar colour, const float scale = 0.2
     p.y = (int)(q.y + 9 * sin(angle - CV_PI / 4));
     line(img, p, q, colour, 1, LINE_AA);
 }
-double getOrientation(const vector<Point>& pts, Mat& img)
+double getOrientation(const vector<Point> &pts, Mat &img)
 {
-    //Construct a buffer used by the pca analysis
+    // Construct a buffer used by the pca analysis
     int sz = static_cast<int>(pts.size());
     Mat data_pts = Mat(sz, 2, CV_64F);
     for (int i = 0; i < data_pts.rows; i++)
@@ -27,18 +26,18 @@ double getOrientation(const vector<Point>& pts, Mat& img)
         data_pts.at<double>(i, 0) = pts[i].x;
         data_pts.at<double>(i, 1) = pts[i].y;
     }
-    //Perform PCA analysis
+    // Perform PCA analysis
     PCA pca_analysis(data_pts, Mat(), PCA::DATA_AS_ROW);
-    //Store the center of the object
+    // Store the center of the object
     Point cntr = Point(static_cast<int>(pca_analysis.mean.at<double>(0, 0)),
-        static_cast<int>(pca_analysis.mean.at<double>(0, 1)));
-    //Store the eigenvalues and eigenvectors
+                       static_cast<int>(pca_analysis.mean.at<double>(0, 1)));
+    // Store the eigenvalues and eigenvectors
     vector<Point2d> eigen_vecs(2);
     vector<double> eigen_val(2);
     for (int i = 0; i < 2; i++)
     {
         eigen_vecs[i] = Point2d(pca_analysis.eigenvectors.at<double>(i, 0),
-            pca_analysis.eigenvectors.at<double>(i, 1));
+                                pca_analysis.eigenvectors.at<double>(i, 1));
         eigen_val[i] = pca_analysis.eigenvalues.at<double>(i);
     }
     // Draw the principal components
